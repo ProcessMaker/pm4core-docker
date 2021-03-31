@@ -10,7 +10,7 @@ This build has no enterprise packages.
 
 ## Running an instance
 
-1. Modify the .env file
+1. Modify the .env file *(optional)*
 
    | Variable | Description |
    | --- | --- |
@@ -44,7 +44,7 @@ If you want to build your own version locally, set PM_VERSION to a tag at https:
 ```
 docker build --build-arg PM_VERSION=4.1.0 -t processmaker/pm4-core:local .
 ```
-Then change PM_VERSION .env to `local`
+Then change PM_VERSION in .env to `local`
 
 ### Building the docker base image locally
 The pm4-base image includes all the prerequisites for PM4. It's available at https://hub.docker.com/r/processmaker/pm4-base
