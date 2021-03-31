@@ -14,7 +14,7 @@ This build has no enterprise packages.
 
    | Variable | Description |
    | --- | --- |
-   | PM_VERSION | *Only change this if you want to build the image locally with a different version of PM4. Only 4.1.0 and above are supported.*<br><br>The version to install from github. Must match one of the tags at https://github.com/ProcessMaker/processmaker/tags (without the leading 'v') |
+   | PM_VERSION | The version to install from dockerhub. Must match one of the tags at https://hub.docker.com/r/processmaker/pm4-core/tags or [build it locally](Building the docker image locally)|
    | PM_APP_URL | The base URL that's accessible from outside the container. This will usually be `http://localhost` but you can change it if you customize your hosts file and add `extra_hosts` to the docker-compose.yml |
    | PM_APP_PORT | Choose a different port if 8080 is in use on your host |
    | PM_BROADCASTER_PORT | Choose a different port for the Socket.io server if 6001 is in use on your host |
@@ -40,10 +40,11 @@ This build has no enterprise packages.
    ```
 
 ### Building the docker image locally
-If you change the PM_VERSION in the .env file or modify steps in the Dockerfile, you can build it locally with
+If you want to build your own version locally, set PM_VERSION to a tag at https://github.com/ProcessMaker/processmaker/tags (without the leading 'v')
 ```
-docker-compose build web
+docker build --build-arg PM_VERSION=4.1.0 -t processmaker/pm4-core:local .
 ```
+Then change PM_VERSION .env to `local`
 
 ### Building the docker base image locally
 The pm4-base image includes all the prerequisites for PM4. It's available at https://hub.docker.com/r/processmaker/pm4-base

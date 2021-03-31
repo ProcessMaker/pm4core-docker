@@ -51,11 +51,5 @@ if [ ! -f ".env" ]; then
     echo "PROCESSMAKER_SCRIPTS_DOCKER=/usr/local/bin/docker" >> .env
     echo "PROCESSMAKER_SCRIPTS_DOCKER_MODE=copying" >> .env
     echo "LARAVEL_ECHO_SERVER_AUTH_HOST=http://localhost" >> .env
-
-
-
-    # BROADCASTER_HOST=http://localhost:8085:6001 --> BROADCASTER_HOST=http://localhost:6001
-    # modify laravel-echo-server.json using jq instead of copying? (needs redis host)
-    # still not working
-    # database appears to be preserved, does that have an effect when running the install script?
+    echo "SESSION_SECURE_COOKIE=false" >> .env
 fi
