@@ -12,17 +12,17 @@ This build has no enterprise packages.
 
 1. Modify the .env file
 
-   | Env var | Description |
+   | Variable | Description |
    | --- | --- |
-   | PM_VERSION | The version to install from github. Must match one of the tags at https://github.com/ProcessMaker/processmaker/tags (without the leading 'v') |
-   | PM_APP_URL | The base URL that accessible from outside the container. This will usually be `http://localhost` but you can change it if you customize your hosts file and add `extra_hosts` to the docker-compose.yml |
+   | PM_VERSION | *Only change this if you want to build the image locally with a different version of PM4. Only 4.1.0 and above are supported.*<br><br>The version to install from github. Must match one of the tags at https://github.com/ProcessMaker/processmaker/tags (without the leading 'v') |
+   | PM_APP_URL | The base URL that's accessible from outside the container. This will usually be `http://localhost` but you can change it if you customize your hosts file and add `extra_hosts` to the docker-compose.yml |
    | PM_APP_PORT | Choose a different port if 8080 is in use on your host |
-   | PM_BROADCASTER_PORT | Choose a different port for the Socket.io server 6001 is in use on your host |
+   | PM_BROADCASTER_PORT | Choose a different port for the Socket.io server if 6001 is in use on your host |
    | PM_DOCKER_SOCK | Location of your docker socket file. See [note](#bind-mounting-the-docker-socket) |
 
-1. Run `docker-compose up`
+2. Run `docker-compose up`
 
-   This will build the image if it hasn't been built and start the containers.
+   This will pull the image if it doesn't exist.
 
    If this is the first time running, it will run the install script and seed the database.
    It usually takes a few minutes but if script executor images need to be built it will take a few extra minutes.
@@ -39,18 +39,24 @@ This build has no enterprise packages.
    docker-compose up
    ```
 
-### Bind-mounting the docker socket
-The instance uses host's docker server by bind-mounting your docker sock file.
-This allows for smaller images and better performance than using dind (docker in docker).
-See [this post](http://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/) for more info.
-The host socket file is usually at /var/run/docker.sock but can be changed in the .env file
+### Building the docker image locally
+If you change the PM_VERSION in the .env file or modify steps in the Dockerfile, you can build it locally with
+```
+docker-compose build web
+```
 
-### Build the docker base image
+### Building the docker base image locally
 The pm4-base image includes all the prerequisites for PM4. It's available at https://hub.docker.com/r/processmaker/pm4-base
 
 If you need to modify it you can edit Dockerfile.base and build it yourself with
 ```
 docker build -t pm4-base:local -f Dockerfile.base .
 ```
-
 Make sure to change `FROM` at the top of the Dockerfile and rebuild with `docker-compose build web`
+
+### Bind-mounting the docker socket
+The instance uses host's docker server by bind-mounting your docker sock file.
+This allows for smaller images and better performance than using dind (docker in docker).
+See [this post](http://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/) for more info.
+The host socket file is usually at /var/run/docker.sock but can be changed in the .env file
+
