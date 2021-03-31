@@ -14,7 +14,7 @@ This build has no enterprise packages.
 
    | Variable | Description |
    | --- | --- |
-   | PM_VERSION | The version to install from dockerhub. Must match one of the tags at https://hub.docker.com/r/processmaker/pm4-core/tags or [build it locally](Building the docker image locally)|
+   | PM_VERSION | The version to install from dockerhub. Must match one of the tags at https://hub.docker.com/r/processmaker/pm4-core/tags or [build it locally](#building-the-docker-image-locally)|
    | PM_APP_URL | The base URL that's accessible from outside the container. This will usually be `http://localhost` but you can change it if you customize your hosts file and add `extra_hosts` to the docker-compose.yml |
    | PM_APP_PORT | Choose a different port if 8080 is in use on your host |
    | PM_BROADCASTER_PORT | Choose a different port for the Socket.io server if 6001 is in use on your host |
