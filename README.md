@@ -21,7 +21,7 @@ This build has no enterprise packages.
 
    | Variable | Description |
    | --- | --- |
-   | PM_VERSION | The version to install from dockerhub. Must match one of the tags at https://hub.docker.com/r/processmaker/pm4-core/tags or [build it locally](#building-the-docker-image-locally)|
+   | PM_VERSION | The version to install from dockerhub. Must match one of the tags at https://hub.docker.com/r/processmaker/pm4-core/tags or [build it locally](#building-the-application-image-locally)|
    | PM_APP_URL | The base URL that's accessible from outside the container. This will usually be `http://localhost` but you can change it if you customize your hosts file and add `extra_hosts` to the docker-compose.yml |
    | PM_APP_PORT | Choose a different port if 8080 is in use on your host |
    | PM_BROADCASTER_PORT | Choose a different port for the Socket.io server if 6001 is in use on your host |
@@ -46,21 +46,21 @@ This build has no enterprise packages.
    docker-compose up
    ```
 
-## Building the docker image locally
+## Building the application image locally
 If you want to build your own version locally, run docker build with PM_VERSION set to a tag at https://github.com/ProcessMaker/processmaker/tags (without the leading 'v')
 ```
 docker build --build-arg PM_VERSION=4.1.0 -t processmaker/pm4-core:local .
 ```
 Then change PM_VERSION in .env to `local`
 
-## Building the docker base image locally
+## Building the base image locally
 The pm4-base image includes all the prerequisites for PM4. It's available at https://hub.docker.com/r/processmaker/pm4-base
 
 If you need to modify it you can edit Dockerfile.base and build it yourself with
 ```
 docker build -t pm4-base:local -f Dockerfile.base .
 ```
-Make sure to change `FROM` at the top of the Dockerfile and rebuild with `docker-compose build web`
+After building the base image, change `FROM` at the top of the Dockerfile and rebuild the application image the [above instructions](#building-the-application-image-locally)
 
 ## Bind-mounting the docker socket
 The instance uses the host's docker server by bind-mounting your docker sock file.
@@ -71,7 +71,7 @@ The host socket file is usually at /var/run/docker.sock but can be changed in th
 ## Todo: Automated builds pushed to dockerhub
 
 Currently, the image must be built and pushed to dockerhub manually using the
-[instructions above](#building-the-docker-image-locally) when a new tag of PM4
+[instructions above](#building-the-application-image-locally) when a new tag of PM4
 is released.
 
 The goal is to have CircleCI do this automatically
