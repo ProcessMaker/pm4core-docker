@@ -6,16 +6,16 @@ This build has no enterprise packages.
 
 ## Requirements
 - Docker Engine >= 3.2
-  - For Mac and Windows Users, we recommend Docker For Mac and Docker For Windows
-  - [Install Instructions](https://docs.docker.com/engine/install/)
+  - For Mac and Windows Users, we recommend [Docker Desktop](https://www.docker.com/products/docker-desktop)
+  - For other installation options: [Install Instructions](https://docs.docker.com/engine/install/)
   
 - Docker Compose >= 1.2
-  - If using Docker For Mac or Docker For Windows, Docker Compose is already included
+  - If using Docker Desktop, Compose is already included
   - For all others: [Install Instructions](https://docs.docker.com/compose/install/)
 
 ## Running an instance
 
-1. Clone this repo
+1. Clone or download this repo
 
 1. Modify the .env file *(optional)*
 
@@ -29,10 +29,10 @@ This build has no enterprise packages.
 
 1. Run `docker-compose up`
 
-   This will pull the image if it doesn't exist.
+   This will pull the image if it doesn't exist. It's >2 gigabytes so it could take some time.
 
    If this is the first time running, it will run the install script and seed the database.
-   It usually takes a few minutes but if script executor images need to be built it will take a few extra minutes.
+   This part usually takes a few minutes but if script executor images need to be downloaded and built it will take a few extra minutes.
 
    The instance should now be available at http://localhost:8080 (or where ever you configured it in the .env file)
 
@@ -68,10 +68,18 @@ This allows for smaller images and better performance than using dind (docker in
 See [this post](http://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/) for more info.
 The host socket file is usually at /var/run/docker.sock but can be changed in the .env file
 
-## Todo: Automated builds pushed to dockerhub
+## Todo
+
+### Automated builds pushed to dockerhub
 
 Currently, the image must be built and pushed to dockerhub manually using the
 [instructions above](#building-the-application-image-locally) when a new tag of PM4
 is released.
 
 The goal is to have CircleCI do this automatically
+
+
+### Use production build
+
+Currently the image is built using development as the target (e.g. `npm run dev`). Building for production for Node and Composer packages
+should greatly reduce the image size and might increase performance.
