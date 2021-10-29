@@ -49,7 +49,7 @@ This build has no enterprise packages.
 ## Building the application image locally
 If you want to build your own version locally, run docker build with PM_VERSION set to a tag at https://github.com/ProcessMaker/processmaker/tags (without the leading 'v')
 ```
-docker build --build-arg PM_VERSION=4.1.0 -t processmaker/pm4-core:local .
+docker build --build-arg PM_VERSION=4.1.21-RC7 -t processmaker/pm4-core:local .
 ```
 Then change PM_VERSION in .env to `local`
 
