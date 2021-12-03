@@ -6,17 +6,11 @@ RUN apt update
 
 # In ubuntu 20.04, installing php without specifying a version installs 7.4 :)
 RUN apt install -y php php-cli php-fpm php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-imagick php-dom php-sqlite3 \
-nginx vim curl unzip wget supervisor cron mysql-client build-essential
-
-#
-# node
-#
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt -y install nodejs
+  nginx vim curl unzip wget supervisor cron mysql-client build-essential
 
 #
 # install composer
-# 
+#
 RUN wget -O composer-setup.php https://getcomposer.org/installer
 RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 RUN composer self-update
@@ -33,7 +27,7 @@ RUN chmod 0644 /etc/cron.d/laravel-cron && crontab /etc/cron.d/laravel-cron
 ENV DOCKERVERSION=20.10.5
 RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKERVERSION}.tgz \
   && tar xzvf docker-${DOCKERVERSION}.tgz --strip 1 \
-                 -C /usr/local/bin docker/docker \
+  -C /usr/local/bin docker/docker \
   && rm docker-${DOCKERVERSION}.tgz
 
 #
@@ -42,8 +36,8 @@ RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${
 RUN sed -i 's/www-data/root/g' /etc/php/7.4/fpm/pool.d/www.conf
 
 #
-# nginx 
-# 
+# nginx
+#
 COPY build-files/nginx.conf /etc/nginx/nginx.conf
 
 #
