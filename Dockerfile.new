@@ -1,23 +1,33 @@
 FROM php:7.4-cli-alpine as PHPBASE
 
 RUN apt update -y && apt install
+RUN sed -i 's/www-data/root/g' /etc/php/7.4/fpm/pool.d/www.conf
 
 FROM alpine as copy
+ARG PM_VERSION
 WORKDIR /tmp
 RUN wget https://github.com/ProcessMaker/processmaker/archive/refs/tags/v${PM_VERSION}.zip
-RUN unzip v${PM_VERSION}.zip && rm -rf /code/pm4 && mv processmaker-${PM_VERSION} /code/pm4
+RUN unzip v${PM_VERSION}.zip && mkdir -p /code/pm4 && mv processmaker-${PM_VERSION} /code/pm4
 
 FROM composer:1.7 as vendor
+ARG PM_VERSION
 WORKDIR /code/pm4
-COPY --from=copy /code/pm4 .
-RUN composer install
+COPY --from=copy /code/pm4/processmaker-${PM_VERSION} .
+RUN composer install --ignore-platform-reqs
 COPY build-files/laravel-echo-server.json .
 
-FROM node:lts-alpine as NODE
+FROM node:lts-alpine as node
 WORKDIR /code/pm4
 COPY --from=vendor /code/pm4 .
 RUN npm install
 RUN npm run dev
 
 FROM nginx:alpine
+RUN apk add --no-cache supervisor
+COPY build-files/services.conf /etc/supervisor/conf.d/services.conf
 COPY build-files/nginx.conf /etc/nginx/nginx.conf
+COPY build-files/laravel-cron /etc/cron.d/laravel-cron
+RUN chmod 0644 /etc/cron.d/laravel-cron && crontab /etc/cron.d/laravel-cron
+WORKDIR /code/pm4
+COPY --from=node /code/pm4 .
+EXPOSE 80 443 6001
