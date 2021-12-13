@@ -12,7 +12,7 @@ services:
       - PM_APP_PORT
       - PM_BROADCASTER_PORT
     volumes:
-      - /var/run/docker.sock:/usr/bin/docker.sock
+      - ${PM_DOCKER_SOCK}:/usr/bin/docker.sock
       - storage:/code/pm4/storage
     links:
       - redis
