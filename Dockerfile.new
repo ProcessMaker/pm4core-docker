@@ -20,10 +20,15 @@ RUN npm run dev
 FROM serversideup/php:7.4-fpm-nginx
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ="America/Los_Angeles"
-RUN apt update
-RUN apt-get install -y supervisor cron php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-imagick php-sqlite3 mysql-client \
+ENV DOCKERVERSION=20.10.5
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends supervisor cron php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-imagick php-sqlite3 mysql-client \
     && apt-get clean \
-        && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKERVERSION}.tgz \
+    && tar xzvf docker-${DOCKERVERSION}.tgz --strip 1 \
+    -C /usr/local/bin docker/docker \
+    && rm docker-${DOCKERVERSION}.tgz
 RUN sed -i 's/www-data/root/g' /etc/php/7.4/fpm/pool.d/www.conf
 COPY build-files/services.conf /etc/supervisor/conf.d/services.conf
 COPY build-files/nginx.conf /etc/nginx/nginx.conf
