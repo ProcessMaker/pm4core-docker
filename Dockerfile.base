@@ -5,14 +5,16 @@ ENV TZ="America/Los_Angeles"
 RUN apt update
 
 # In ubuntu 20.04, installing php without specifying a version installs 7.4 :)
-RUN apt install -y php php-cli php-fpm php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-imagick php-dom php-sqlite3 \
-nginx vim curl unzip wget supervisor cron mysql-client build-essential
+RUN apt install -y php php-cli php-fpm php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-imagick php-dom php-sqlite3 php-imap \
+nginx vim curl git unzip wget supervisor cron mysql-client build-essential rsync \
+libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
 #
 # node
 #
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt -y install nodejs
+RUN npm config set cache /root/.cache/npm --global
 
 #
 # install composer
@@ -46,12 +48,4 @@ RUN sed -i 's/www-data/root/g' /etc/php/7.4/fpm/pool.d/www.conf
 # 
 COPY build-files/nginx.conf /etc/nginx/nginx.conf
 
-#
-# supervisord
-#
-COPY build-files/services.conf /etc/supervisor/conf.d/services.conf
-
-
-RUN mkdir -p /code/pm4
-WORKDIR /code/pm4
 EXPOSE 80 443 6001
