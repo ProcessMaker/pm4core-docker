@@ -8,3 +8,5 @@ done
 /bin/pm install-packages-ci
 
 touch /code/pm4/done.txt
+
+tail -f /dev/null
