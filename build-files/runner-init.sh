@@ -1,4 +1,4 @@
-set -x
+set -e
 
 ls -la /code/pm4
 
