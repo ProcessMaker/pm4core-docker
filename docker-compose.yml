@@ -6,6 +6,7 @@ services:
       - .env
     environment:
       - GITHUB_TOKEN
+      - GITHUB_CONTEXT
     volumes:
       - ${PM_DOCKER_SOCK}:/var/run/docker.sock
       # - storage:/code/pm4/storage

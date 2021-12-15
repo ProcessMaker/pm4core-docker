@@ -8,4 +8,4 @@ do
 done
 
 cd /code/pm4
-POPULATE_DATABASE=0 ./vendor/bin/phpunit
+./vendor/bin/phpunit --testdox
