@@ -7,4 +7,4 @@ done
 
 /bin/pm install-packages-ci
 
-docker build -t pm4-app:$PM_VERSION -f build-files/Dockerfile.app .
+touch /code/pm4/done.txt

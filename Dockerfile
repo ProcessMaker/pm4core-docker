@@ -9,8 +9,8 @@ RUN ln -s /root/.config/composer/vendor/bin/pm /bin/pm
 
 WORKDIR  /code
 
-RUN mkdir -p /code/pm4-packages
-RUN mkdir -p /code/pm4
+# RUN mkdir -p /code/pm4-packages
+# RUN mkdir -p /code/pm4
 
 RUN echo "variables_order = \"EPCS\"" > /etc/php/7.4/cli/conf.d/30-env.ini
 
