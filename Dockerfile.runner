@@ -1,4 +1,4 @@
-FROM pm4-base:local AS build
+FROM processmaker/pm4-base:2.0.0 AS build
 
 COPY ./build-files /code/build-files
 

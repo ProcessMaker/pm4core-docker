@@ -9,7 +9,6 @@ services:
       - GITHUB_CONTEXT
     volumes:
       - ${PM_DOCKER_SOCK}:/var/run/docker.sock
-      # - storage:/code/pm4/storage
       - ${HOST_CACHE_PATH}:/root/.cache
       - pm4:/code/pm4
       - pm4-packages:/code/pm4-packages
@@ -42,7 +41,7 @@ services:
     environment:
       - PHPUNIT_ARGS
   base:
-    image: pm4-base:local 
+    image: processmaker/pm4-base:2.0.0 
     build:
       context: .
       dockerfile: Dockerfile.base
@@ -61,7 +60,6 @@ services:
       - database:/var/lib/mysql
 volumes:
   database:
-  # storage:
   redis:
   pm4:
   pm4-packages:
