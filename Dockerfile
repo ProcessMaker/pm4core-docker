@@ -18,4 +18,4 @@ ENV CACHE_PATH=/root/.cache
 
 COPY ./build-files /code/build-files
 
-CMD bash build-files/install-and-run.sh
+CMD bash build-files/builder-init.sh

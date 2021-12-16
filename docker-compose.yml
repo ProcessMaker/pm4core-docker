@@ -39,6 +39,8 @@ services:
       - ${HOST_CACHE_PATH}:/root/.cache
       - pm4:/code/pm4
       - pm4-packages:/code/pm4-packages
+    environment:
+      - PHPUNIT_ARGS
   base:
     image: pm4-base:local 
     build:
