@@ -1,2 +1,4 @@
 bind-mount/composer/cache
 bind-mount/npm
+.idea/
+.vscode/
