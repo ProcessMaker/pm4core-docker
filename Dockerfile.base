@@ -1,56 +1,17 @@
-FROM ubuntu:20.04
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ="America/Los_Angeles"
+# syntax = docker/dockerfile:1.2
 
-RUN apt update
+FROM php:7.4-alpine
 
-# In ubuntu 20.04, installing php without specifying a version installs 7.4 :)
-RUN apt install -y php php-cli php-fpm php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-imagick php-dom php-sqlite3 php-imap \
-vim curl git unzip wget mysql-client build-essential rsync
+RUN apk update
+RUN apk add bash curl git vim rsync mysql-client
 
-# supervisor nginx cron
-# libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions
+RUN install-php-extensions imagick exif pcntl zip imap gd pdo_mysql
 
-#
-# node
-#
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt -y install nodejs
-RUN npm config set cache /root/.cache/npm --global
+WORKDIR /code
+RUN curl -s https://getcomposer.org/installer | php
+RUN mv composer.phar /usr/local/bin/composer
+ENV COMPOSER_HOME=/cache/composer
 
-#
-# install composer
-# 
-RUN wget -O composer-setup.php https://getcomposer.org/installer
-RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-RUN composer self-update
 
-#
-# cron
-#
-# COPY build-files/laravel-cron /etc/cron.d/laravel-cron
-# RUN chmod 0644 /etc/cron.d/laravel-cron && crontab /etc/cron.d/laravel-cron
-
-#
-# docker client
-#
-ENV DOCKERVERSION=20.10.5
-RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKERVERSION}.tgz \
-  && tar xzvf docker-${DOCKERVERSION}.tgz --strip 1 \
-                 -C /usr/local/bin docker/docker \
-  && rm docker-${DOCKERVERSION}.tgz
-
-#
-# configure php-fpm to run as root
-#
-RUN sed -i 's/www-data/root/g' /etc/php/7.4/fpm/pool.d/www.conf
-
-#
-# nginx 
-# 
-# COPY build-files/nginx.conf /etc/nginx/nginx.conf
-
-# populate $_ENV with environment variables
-RUN echo "variables_order = \"EPCS\"" > /etc/php/7.4/cli/conf.d/30-env.ini
-
-EXPOSE 80 443 6001

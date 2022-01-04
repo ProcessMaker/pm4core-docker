@@ -1,0 +1,34 @@
+# syntax = docker/dockerfile:1.2
+FROM nolanpro/pm4-ci-base as build
+
+ARG GITHUB_CONTEXT
+ENV GITHUB_CONTEXT=${GITHUB_CONTEXT}
+ARG GITHUB_TOKEN
+ENV GITHUB_TOKEN=${GITHUB_TOKEN}
+
+COPY pm4-tools pm4-tools
+# RUN ./composer.phar global config repositories.pm4-tools vcs https://${GITHUB_TOKEN}@github.com/ProcessMaker/pm4-tools.git
+# RUN composer global config repositories.pm4-tools path /code/pm4-tools 
+# RUN ./composer.phar global require processmaker/pm4-tools:dev-master
+# RUN composer global require processmaker/pm4-tools
+
+# Install NodeJS
+COPY --from=node:14.4-alpine /usr/local /nodejs
+ENV PATH="/nodejs/bin:${PATH}"
+RUN npm config set cache /cache/npm
+
+COPY .env pm4-tools/.env
+ENV ENV=/root/.profile
+
+WORKDIR /code/pm4
+RUN /code/pm4-tools/pm build-ci
+ENV CYPRESS_INSTALL_BINARY=0
+RUN /code/pm4-tools/pm build-javascript-ci
+
+RUN rm -rf node_modules
+
+FROM nolanpro/pm4-ci-base
+COPY --from=build /code/pm4 /code/pm4
+COPY --from=build /code/pm4-tools /code/pm4-tools
+
+COPY ./build-files/install-and-test.sh .
