@@ -17,8 +17,8 @@ services:
   install:
     image: nolanpro/pm4-ci-build
     command: sh install-and-test.sh
-    volumes:
-      - ./pm4-tools:/code/pm4-tools
+    # volumes:
+    #   - ./pm4-tools:/code/pm4-tools
     env_file:
       - .env
     links:
