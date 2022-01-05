@@ -25,11 +25,11 @@ RUN /code/pm4-tools/pm build-ci
 ENV CYPRESS_INSTALL_BINARY=0
 RUN /code/pm4-tools/pm build-javascript-ci
 
-# RUN rm -rf node_modules
+RUN rm -rf node_modules
 
-# FROM nolanpro/pm4-ci-base
-# COPY --from=build /code/pm4 /code/pm4
-# COPY --from=build /code/pm4-tools /code/pm4-tools
+FROM nolanpro/pm4-ci-base
+COPY --from=build /code/pm4 /code/pm4
+COPY --from=build /code/pm4-tools /code/pm4-tools
 
 WORKDIR /code
 COPY ./build-files/install-and-test.sh .

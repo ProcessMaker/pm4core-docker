@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile.base
   build:
-    image: pm4-ci-build:local
+    image: nolanpro/pm4-ci-build
     build:
       context: .
       dockerfile: Dockerfile.build
@@ -15,7 +15,7 @@ services:
         GITHUB_CONTEXT:
         HOST_CACHE_PATH:
   install:
-    image: pm4-ci-build:local
+    image: nolanpro/pm4-ci-build
     command: sh install-and-test.sh
     volumes:
       - ./pm4-tools:/code/pm4-tools
