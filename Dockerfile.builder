@@ -1,5 +1,3 @@
-# syntax = docker/dockerfile:1.2
-
 FROM php:7.4-alpine
 
 RUN apk update
@@ -14,4 +12,13 @@ RUN curl -s https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 ENV COMPOSER_HOME=/cache/composer
 
+COPY --from=node:14.4-alpine /usr/local /nodejs
+ENV PATH="/nodejs/bin:${PATH}"
+RUN npm config set cache /cache/npm
 
+COPY ./pm4-tools /code/pm4-tools
+WORKDIR /code/pm4-tools
+
+WORKDIR /code
+
+COPY build-files/builder.sh .

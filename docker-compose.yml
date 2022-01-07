@@ -1,22 +1,14 @@
 version: "3.8"
 services:
-  base:
+  builder:
     image: nolanpro/pm4-ci-base
     build:
       context: .
-      dockerfile: Dockerfile.base
-  build:
-    image: pm4-ci-build:local
-    build:
-      context: .
-      dockerfile: Dockerfile.build
-      args:
-        GITHUB_TOKEN:
-        GITHUB_CONTEXT:
-        HOST_CACHE_PATH:
-  install:
-    image: pm4-ci-build:local
-    command: sh install-and-test.sh
+      dockerfile: Dockerfile.builder
+    command: sh builder.sh
+    environment:
+      - GITHUB_TOKEN
+      - GITHUB_CONTEXT
     env_file:
       - .env
     links:
@@ -25,6 +17,9 @@ services:
     depends_on:
       - mysql
       - redis 
+    volumes:
+      - ./cache:/cache
+
   redis:
     image: redis
     volumes:

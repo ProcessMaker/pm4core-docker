@@ -7,7 +7,11 @@ done
 
 echo "memory_limit=10G" >> /usr/local/etc/php/php.ini
 
-/code/pm4-tools/pm install-ci
-cd pm4
-vendor/bin/paratest -p 6
+composer config --global github-oauth.github.com $GITHUB_TOKEN
 
+/code/pm4-tools/pm build-ci
+/code/pm4-tools/pm build-javascript-ci
+/code/pm4-tools/pm install-ci
+
+cd /code/pm4
+vendor/bin/paratest -p 6
