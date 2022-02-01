@@ -5,8 +5,6 @@ while ! mysqladmin ping -u $DB_USERNAME -p"$DB_PASSWORD" -h $DB_HOSTNAME -P $DB_
     sleep 1
 done
 
-echo "memory_limit=10G" >> /usr/local/etc/php/php.ini
-
 composer config --global github-oauth.github.com $GITHUB_TOKEN
 
 /code/pm4-tools/pm build-ci

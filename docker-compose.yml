@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   builder:
-    image: nolanpro/pm4-ci-base
+    image: local:latest
     build:
       context: .
       dockerfile: Dockerfile.builder
@@ -19,11 +19,18 @@ services:
       - redis 
     volumes:
       - ./cache:/cache
-
+  
+  base:
+    image: processmaker/pm4-base:2.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+  
   redis:
     image: redis
     volumes:
       - redis:/data
+
   mysql:
     image: mysql:5.7
     restart: always
@@ -32,8 +39,7 @@ services:
       MYSQL_DATABASE: processmaker
     volumes:
       - database:/var/lib/mysql
+      
 volumes:
   database:
   redis:
-  pm4:
-  pm4-packages:

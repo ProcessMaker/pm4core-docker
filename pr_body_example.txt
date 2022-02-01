@@ -1,0 +1,22 @@
+## Test PR
+
+Branches needed:
+
+ci:package-auth:updates-for-ci
+ci:package-dynamic-ui:updates-for-ci
+ci:package-savedsearch:updates-for-ci
+ci:processmaker:updates-for-ci
+ci:package-auth:updates-for-ci
+ci:package-actions-by-email:updates-for-ci
+ci:connector-slack:updates-for-ci
+ci:package-googleplaces:updates-for-ci
+ci:connector-send-email:updates-for-ci
+ci:package-advanced-user-manager:updates-for-ci
+ci:connector-docusign:updates-for-ci
+ci:package-collections:updates-for-ci
+ci:package-data-sources:updates-for-ci
+ci:package-data-sources:updates-for-ci
+ci:connector-pdf-print:updates-for-ci
+
+Done!
+

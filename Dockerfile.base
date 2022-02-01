@@ -51,8 +51,7 @@ RUN sed -i 's/www-data/root/g' /etc/php/7.4/fpm/pool.d/www.conf
 # COPY build-files/nginx.conf /etc/nginx/nginx.conf
 
 # populate $_ENV with environment variables
-RUN echo "variables_order = \"EPCS\"" > /etc/php/7.4/cli/conf.d/30-env.ini
-
+RUN echo "variables_order = \"EGPCS\"" > /etc/php/7.4/cli/conf.d/30-env.ini
 
 # Use the correct version of mysqldump
 COPY --from=mysql:5.7 /usr/bin/mysqldump /usr/bin/mysqldump
