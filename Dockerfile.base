@@ -6,17 +6,13 @@ RUN apt update
 
 # In ubuntu 20.04, installing php without specifying a version installs 7.4 :)
 RUN apt install -y php php-cli php-fpm php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-imagick php-dom php-sqlite3 php-imap \
-vim curl git unzip wget mysql-client build-essential rsync
-
-# supervisor nginx cron
-# libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+nginx vim curl git unzip wget supervisor cron mysql-client build-essential
 
 #
 # node
 #
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt -y install nodejs
-RUN npm config set cache /root/.cache/npm --global
 
 #
 # install composer
@@ -28,8 +24,8 @@ RUN composer self-update
 #
 # cron
 #
-# COPY build-files/laravel-cron /etc/cron.d/laravel-cron
-# RUN chmod 0644 /etc/cron.d/laravel-cron && crontab /etc/cron.d/laravel-cron
+COPY build-files/laravel-cron /etc/cron.d/laravel-cron
+RUN chmod 0644 /etc/cron.d/laravel-cron && crontab /etc/cron.d/laravel-cron
 
 #
 # docker client
@@ -48,7 +44,12 @@ RUN sed -i 's/www-data/root/g' /etc/php/7.4/fpm/pool.d/www.conf
 #
 # nginx 
 # 
-# COPY build-files/nginx.conf /etc/nginx/nginx.conf
+COPY build-files/nginx.conf /etc/nginx/nginx.conf
+
+#
+# supervisord
+#
+COPY build-files/services.conf /etc/supervisor/conf.d/services.conf
 
 # populate $_ENV with environment variables
 RUN echo "variables_order = \"EGPCS\"" > /etc/php/7.4/cli/conf.d/30-env.ini

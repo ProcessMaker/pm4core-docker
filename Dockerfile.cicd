@@ -8,4 +8,4 @@ WORKDIR /code/pm4-tools
 RUN composer install --no-interaction
 
 WORKDIR /code
-COPY build-files/builder.sh .
+COPY build-files/cicd-build-run.sh .

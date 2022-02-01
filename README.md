@@ -68,6 +68,37 @@ This allows for smaller images and better performance than using dind (docker in
 See [this post](http://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/) for more info.
 The host socket file is usually at /var/run/docker.sock but can be changed in the .env file
 
+# ProcessMaker CI/CD Build
+This repository includes our setup for internal CI/CD builds run by Github Actions. This includes all enterprise packages.
+## Running locally
+1. Create a github personal access token with access to all enterprise packages and set it as an environment variable called GITHUB_TOKEN
+   ```
+   export GITHUB_TOKEN=ghp_........
+   ```
+2. Source set_context_example.sh to set an example GITHUB_CONTEXT variable with the PR body from pr_body_example.txt
+   ```
+   source set_context_example.sh
+   ```
+3. (Optional) Build the base image (otherwise it will get pulled from dockerhub)
+   ```
+   docker-compose build base
+   ```
+4. Build the local CI/CD image
+   ```
+   docker-compose build cicd
+   ```
+5. Run the image to build the app and execute phpunit tests
+   ```
+   docker-compose run cicd
+   ```
+6. To debug, commit the container to an image and run bash. To find the container ID run `docker ps -a` and look for the name pm4core-docker_builder_run...
+   ```
+   docker commit {container id} debug:latest
+   docker run --rm -it debug bash
+   ```
+   You can then CD into /code/pm4 and run individual phpunit tests
+
+
 ## Todo
 
 ### Automated builds pushed to dockerhub
