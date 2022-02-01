@@ -46,7 +46,7 @@ if [ ! -f ".env" ]; then
     --data-username=pm \
     --data-password=pass \
     --redis-host=redis
-    
+
 
     echo "PROCESSMAKER_SCRIPTS_DOCKER=/usr/local/bin/docker" >> .env
     echo "PROCESSMAKER_SCRIPTS_DOCKER_MODE=copying" >> .env
