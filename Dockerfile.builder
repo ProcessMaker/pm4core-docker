@@ -4,6 +4,8 @@ RUN npm config set cacphe /cache/npm
 ENV COMPOSER_HOME=/cache/composer
 
 COPY ./pm4-tools /code/pm4-tools
+WORKDIR /code/pm4-tools
+RUN composer install --no-interaction
 
 WORKDIR /code
 COPY build-files/builder.sh .
