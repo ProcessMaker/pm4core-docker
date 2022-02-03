@@ -8,7 +8,9 @@ done
 composer config --global github-oauth.github.com $GITHUB_TOKEN
 
 /code/pm4-tools/pm build-ci
-/code/pm4-tools/pm build-javascript-ci
+if [ "$BUILD_JAVASCRIPT" = true ] ; then
+    /code/pm4-tools/pm build-javascript-ci
+fi
 /code/pm4-tools/pm install-ci
 
 cd /code/pm4
