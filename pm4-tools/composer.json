@@ -1,0 +1,41 @@
+{
+    "name": "processmaker/pm4-tools",
+    "description": "A lightweight cli tool to aid local develop of ProcessMaker software",
+    "type": "project",
+    "license": "MIT",
+    "bin": ["pm"],
+    "version": "0.5.0",
+    "authors": [
+        {
+            "name": "Alex Runyan",
+            "email": "alex@runyan.co"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "ext-json": "*",
+        "ext-posix": "*",
+        "illuminate/support": "^8.73",
+        "illuminate/container": "^8.73",
+        "mnapoli/silly": "^1.7",
+        "react/child-process": "^0.6.4",
+        "symfony/process": "^5.3",
+        "symfony/console": "^5.3",
+        "mockery/mockery": "^1.4",
+        "phpunit/phpunit": "^9.5",
+        "vlucas/phpdotenv": "^5.4",
+        "brianium/paratest": "^6.4"
+    },
+    "require-dev": {
+        "beyondcode/laravel-dump-server": "^1.7"
+    },
+    "autoload": {
+        "files": [
+            "includes/facades.php",
+            "includes/helpers.php"
+        ],
+        "psr-4": {
+            "ProcessMaker\\Cli\\": "cli/ProcessMaker/"
+        }
+    }
+}
