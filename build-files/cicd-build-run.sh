@@ -8,10 +8,10 @@ done
 composer config --global github-oauth.github.com $GITHUB_TOKEN
 
 /code/pm4-tools/pm build-ci
-if [ "$BUILD_JAVASCRIPT" = true ] ; then
-    /code/pm4-tools/pm build-javascript-ci
-fi
-/code/pm4-tools/pm install-ci
+
+/code/pm4-tools/pm build-javascript-ci
+
+DB_DATABASE=processmaker \
+    /code/pm4-tools/pm install-ci
 
 cd /code/pm4
-vendor/bin/paratest -p 6
