@@ -66,10 +66,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password 
       MYSQL_DATABASE: processmaker
-    volumes:
-      - database:/var/lib/mysql
+    tmpfs: /var/lib/mysql
       
 volumes:
-  database:
   redis:
   storage:
