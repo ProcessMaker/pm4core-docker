@@ -23,7 +23,6 @@ class PackagesCi {
 
     private $cacheManifest;
     private $remoteShas = [];
-    private $gitHubContext;
 
     public function build()
     {
@@ -199,17 +198,17 @@ class PackagesCi {
 
     private function pullRequestBody()
     {
-        return $_ENV('CI_PR_BODY');
+        return Config::env('CI_PR_BODY');
     }
 
     private function pullRequestBranch()
     {
-        return $_ENV('CI_PACKAGE_BRANCH');
+        return Config::env('CI_PACKAGE_BRANCH');
     }
 
     private function repoName()
     {
-        return $_ENV('CI_PROJECT');
+        return Config::env('CI_PROJECT');
     }
 
     private function installCommand()
