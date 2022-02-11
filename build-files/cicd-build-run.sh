@@ -9,6 +9,8 @@ composer config --global github-oauth.github.com $GITHUB_TOKEN
 
 /code/pm4-tools/pm build-ci
 
+mv /code/laravel-echo-server.json /code/pm4/
+
 /code/pm4-tools/pm build-javascript-ci
 
 DB_DATABASE=processmaker \
