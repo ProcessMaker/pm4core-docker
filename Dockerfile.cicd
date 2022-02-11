@@ -8,4 +8,5 @@ WORKDIR /code/pm4-tools
 RUN composer install --no-interaction
 
 WORKDIR /code
+RUN echo "cachebust 1"
 COPY build-files/cicd-build-run.sh .
