@@ -7,8 +7,9 @@ services:
       dockerfile: Dockerfile.cicd
     command: sh cicd-build-run.sh
     environment:
-      - GITHUB_TOKEN
-      - GITHUB_CONTEXT
+      - CI_PR_BODY
+      - CI_PROJECT
+      - CI_PACKAGE_BRANCH
     env_file:
       - .env-cicd
     links:
@@ -50,8 +51,6 @@ services:
       - PM_APP_URL
       - PM_APP_PORT
       - PM_BROADCASTER_PORT
-      - CI_PROJECT
-      - CI_PACKAGE_BRANCH
     volumes:
       - ${PM_DOCKER_SOCK}:/var/run/docker.sock
       - storage:/code/pm4/storage
