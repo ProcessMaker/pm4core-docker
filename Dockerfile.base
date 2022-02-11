@@ -51,6 +51,12 @@ COPY build-files/nginx.conf /etc/nginx/nginx.conf
 #
 COPY build-files/services.conf /etc/supervisor/conf.d/services.conf
 
+#
+# laravel echo server
+#
+RUN mkdir -p /code
+COPY build-files/laravel-echo-server.json /code
+
 # populate $_ENV with environment variables
 RUN echo "variables_order = \"EGPCS\"" > /etc/php/7.4/cli/conf.d/30-env.ini
 

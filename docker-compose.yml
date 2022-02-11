@@ -34,7 +34,7 @@ services:
       - redis:/data
 
   debug:
-    image: debug:latest
+    image: pm4app:latest
     command: bash
     env_file:
       - .env-cicd
@@ -44,7 +44,8 @@ services:
       - mysql
 
   web:
-    image: processmaker/pm4-core:${PM_VERSION}
+    image: pm4app:latest
+    command: supervisord --nodaemon
     ports:
       - ${PM_APP_PORT}:80
       - ${PM_BROADCASTER_PORT}:6001

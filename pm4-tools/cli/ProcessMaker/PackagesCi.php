@@ -187,7 +187,6 @@ class PackagesCi {
 
     private function setBranches()
     {
-        info("Pull Request Body: " . $this->pullRequestBody());
         $result = preg_match_all('/ci:(.+?):(.+?)(\s|$)/', $this->pullRequestBody(), $matches);
         if ($result && $result > 0) {
             $this->branches = array_combine($matches[1], $matches[2]);

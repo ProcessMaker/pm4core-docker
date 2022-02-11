@@ -1,3 +1,3 @@
 set -ex
-docker commit $(docker ps -aqlf "name=^pm4core-docker_cicd_run") debug
+docker commit $(./container.sh) pm4app
 docker container prune -f
