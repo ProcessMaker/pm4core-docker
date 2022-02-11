@@ -7,6 +7,9 @@ done
 
 composer config --global github-oauth.github.com $GITHUB_TOKEN
 
+# temp debug
+echo "PR BODY $CI_PR_BODY"
+
 /code/pm4-tools/pm build-ci
 
 mv /code/laravel-echo-server.json /code/pm4/
