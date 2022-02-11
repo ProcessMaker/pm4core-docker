@@ -23,21 +23,20 @@ class PackagesCi {
 
     private $cacheManifest;
     private $remoteShas = [];
-    private $gitHubContext;
 
     public function build()
     {
         $this->buildCore();
         $this->buildPackages();
     }
-    
+
     public function buildJavascript()
     {
         $javascriptPackages = Packages::getJavascriptPackages(Config::codebasePath());
         $this->installJavascriptPackages($javascriptPackages);
         $this->npmRunDev();
     }
-    
+
     public function install()
     {
         $this->installCore();
@@ -166,7 +165,7 @@ class PackagesCi {
     {
         return $this->artisanCommand("${package}:install");
     }
-    
+
     private function artisanCommand($cmd)
     {
         return CommandLine::runCommand("php artisan ${cmd}", function($code, $output) {
@@ -182,7 +181,7 @@ class PackagesCi {
         if (isset($this->branches[$package])) {
             return $this->branches[$package];
         }
-        
+
         return null;
     }
 
@@ -199,28 +198,17 @@ class PackagesCi {
 
     private function pullRequestBody()
     {
-        return Arr::get($this->getGitHubContext(), 'body', '');
-    }
-    
-    private function pullRequestBranch()
-    {
-        return Arr::get($this->getGitHubContext(), 'head.ref', '');
-    }
-    
-    private function repoName()
-    {
-        return Arr::get($this->getGitHubContext(), 'head.repo.name', '');
+        return Config::env('CI_PR_BODY');
     }
 
-    private function getGitHubContext()
+    private function pullRequestBranch()
     {
-        if ($this->gitHubContext) {
-            return $this->gitHubContext;
-        }
-        if (Config::env('GITHUB_CONTEXT', true)) {
-            $this->gitHubContext = json_decode(Config::env('GITHUB_CONTEXT'), true);
-        }
-        return $this->gitHubContext;
+        return Config::env('CI_PACKAGE_BRANCH');
+    }
+
+    private function repoName()
+    {
+        return Config::env('CI_PROJECT');
     }
 
     private function installCommand()
@@ -289,7 +277,7 @@ class PackagesCi {
             info($info);
             Git::shallowClone($package, $branch, Config::packagesPath($package));
         }
-        
+
         foreach ($list as $package) {
             info("Registering local repository path for $package");
             Composer::addRepositoryPath($package);
@@ -306,7 +294,7 @@ class PackagesCi {
         CommandLine::mustRun($this->installCommand(), Config::codebasePath());
         FileSystem::append(Config::codebasePath() . '/.env', $this->additionalEnv());
     }
-    
+
     private function cloneCore()
     {
         $pm = 'processmaker';
@@ -319,7 +307,7 @@ class PackagesCi {
         extract($_ENV);
         return "-h $DB_HOSTNAME -P $DB_PORT -u $DB_USERNAME -p'${DB_PASSWORD}'";
     }
-    
+
     public function createDatabase($name)
     {
         $connection = $this->databaseConnectionParams();
@@ -335,7 +323,7 @@ class PackagesCi {
         $this->createDatabase($to);
         CommandLine::mustRun("mysql $connection $to < $file");
     }
-    
+
     private function clonePackage($package)
     {
         Git::shallowClone($package, $this->getBranch($package), Config::packagesPath($package));
@@ -367,7 +355,7 @@ class PackagesCi {
 
         return count($packagesToBuild);
     }
-    
+
     private function linkDependentPackages($path)
     {
         $dependentPackages = Packages::getJavascriptPackages($path);
@@ -388,7 +376,7 @@ class PackagesCi {
         }
         CommandLine::mustRun('rm -rf node_modules', Config::packagesPath($package));
     }
-    
+
     private function npmRunDev()
     {
         // unsafe-perm is needed to run postinstall scripts as root

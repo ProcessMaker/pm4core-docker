@@ -8,36 +8,38 @@ services:
     command: sh cicd-build-run.sh
     environment:
       - GITHUB_TOKEN
-      - GITHUB_CONTEXT
+      - CI_PR_BODY
+      - CI_PROJECT
+      - CI_PACKAGE_BRANCH
     env_file:
       - .env-cicd
     links:
       - redis
-      - mysql 
+      - mysql
     depends_on:
       - mysql
-      - redis 
+      - redis
     volumes:
       - ./cache:/cache
-  
+
   base:
     image: processmaker/pm4-base:2.0.0
     build:
       context: .
       dockerfile: Dockerfile.base
-  
+
   redis:
     image: redis
     volumes:
       - redis:/data
-  
+
   debug:
     image: debug:latest
     command: bash
     env_file:
       - .env-cicd
     links:
-      - mysql 
+      - mysql
     depends_on:
       - mysql
 
@@ -55,7 +57,7 @@ services:
       - storage:/code/pm4/storage
     links:
       - redis
-      - mysql 
+      - mysql
     depends_on:
       - mysql
       - redis
@@ -64,10 +66,10 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password 
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: processmaker
     tmpfs: /var/lib/mysql
-      
+
 volumes:
   redis:
   storage:
