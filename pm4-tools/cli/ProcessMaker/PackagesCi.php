@@ -187,6 +187,7 @@ class PackagesCi {
 
     private function setBranches()
     {
+        info("Pull Request Body: " . $this->pullRequestBody());
         $result = preg_match_all('/ci:(.+?):(.+?)(\s|$)/', $this->pullRequestBody(), $matches);
         if ($result && $result > 0) {
             $this->branches = array_combine($matches[1], $matches[2]);
@@ -194,6 +195,7 @@ class PackagesCi {
             $this->branches = [];
         }
         $this->branches[$this->repoName()] = $this->pullRequestBranch();
+        info("Branches: " . print_r($this->branches));
     }
 
     private function pullRequestBody()
