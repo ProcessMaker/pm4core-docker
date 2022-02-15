@@ -194,7 +194,6 @@ class PackagesCi {
             $this->branches = [];
         }
         $this->branches[$this->repoName()] = $this->pullRequestBranch();
-        info("Branches: " . print_r($this->branches));
     }
 
     private function pullRequestBody()
