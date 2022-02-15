@@ -17,4 +17,3 @@ DB_DATABASE=processmaker \
     /code/pm4-tools/pm install-ci
 
 cd /code/pm4
-vendor/bin/paratest -p 6
