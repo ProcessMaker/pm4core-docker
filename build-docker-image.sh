@@ -7,6 +7,5 @@ else
 fi
 
 docker build -t processmaker/"${CIRCLE_PROJECT_REPONAME}":"$TAG" .
-echo "$DOCKER_PROJECT_OWNER_PASSWD" | docker login -u "$DOCKER_PROJECT_OWNER" --password-stdin
+echo "$DOCKERHUB_TOKEN" | docker login -u processmaker --password-stdin
 docker push processmaker/"${CIRCLE_PROJECT_REPONAME}":"$TAG"
-
