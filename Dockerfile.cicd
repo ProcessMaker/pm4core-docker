@@ -1,6 +1,6 @@
 FROM processmaker/pm4-base:2.0.0
 
-RUN npm config set cacphe /cache/npm
+RUN npm config set cache /cache/npm --global
 ENV COMPOSER_HOME=/cache/composer
 
 COPY ./pm4-tools /code/pm4-tools
@@ -9,3 +9,4 @@ RUN composer install --no-interaction
 
 WORKDIR /code
 COPY build-files/cicd-build-run.sh .
+COPY build-files/cicd-run-app.sh .

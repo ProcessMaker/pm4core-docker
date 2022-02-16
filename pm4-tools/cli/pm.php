@@ -291,7 +291,4 @@ $app->command('install-ci', function() {
     PackagesCi::install($this);
 });
 
-$app->command('test-runner', function() {
-});
-
 $app->run();

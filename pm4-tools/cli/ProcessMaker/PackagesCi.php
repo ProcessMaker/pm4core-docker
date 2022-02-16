@@ -52,9 +52,15 @@ class PackagesCi {
 
         info("Modifying phpunit.xml to add package tests");
         PhpUnit::addTests(PhpUnit::configFile());
-        $this->copyDatabase(Config::env('DB_DATABASE'), 'test');
+        $this->exportDatabase();
+        $this->cleanUp();
 
         info("Done");
+    }
+
+    public function cleanUp()
+    {
+        CommandLine::mustRun('rm -rf node_modules', Config::codebasePath());
     }
 
     public function shouldUseCache($package)
@@ -315,10 +321,12 @@ class PackagesCi {
         CommandLine::mustRun("mysql $connection -e 'CREATE DATABASE `$name`;'");
     }
 
-    public function copyDatabase($from, $to)
+    public function exportDatabase()
     {
+        $from = Config::env('DB_DATABASE');
+        $to = 'test';
+        $file = 'database.sql';
         $connection = $this->databaseConnectionParams();
-        $file = tempnam(sys_get_temp_dir(), 'dump');
         CommandLine::mustRun("mysqldump $connection $from > $file");
         $this->createDatabase($to);
         CommandLine::mustRun("mysql $connection $to < $file");

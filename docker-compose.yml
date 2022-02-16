@@ -34,7 +34,7 @@ services:
       - redis:/data
 
   debug:
-    image: pm4app:latest
+    image: processmaker/pm4app:${CI_PROJECT}-${CI_PACKAGE_BRANCH}
     command: bash
     env_file:
       - .env-cicd
@@ -44,8 +44,8 @@ services:
       - mysql
 
   web:
-    image: pm4app:latest
-    command: supervisord --nodaemon
+    image: processmaker/pm4app:${CI_PROJECT}-${CI_PACKAGE_BRANCH}
+    command: bash
     ports:
       - ${PM_APP_PORT}:80
       - ${PM_BROADCASTER_PORT}:6001
@@ -53,6 +53,7 @@ services:
       - PM_APP_URL
       - PM_APP_PORT
       - PM_BROADCASTER_PORT
+      - DB_DATABASE=processmaker
     volumes:
       - ${PM_DOCKER_SOCK}:/var/run/docker.sock
       - storage:/code/pm4/storage
