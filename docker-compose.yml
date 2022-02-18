@@ -34,7 +34,7 @@ services:
       - redis:/data
 
   debug:
-    image: processmaker/pm4app:${CI_PROJECT}-${CI_PACKAGE_BRANCH}
+    image: processmaker/pm4app:${IMAGE_TAG}
     command: bash
     env_file:
       - .env-cicd
@@ -44,7 +44,7 @@ services:
       - mysql
   
   phpunit:
-    image: processmaker/pm4app:${CI_PROJECT}-${CI_PACKAGE_BRANCH}
+    image: processmaker/pm4app:${IMAGE_TAG}
     working_dir: /code/pm4
     command: vendor/bin/paratest -p 6
     links:
@@ -55,7 +55,7 @@ services:
       - redis
 
   web:
-    image: processmaker/pm4app:${CI_PROJECT}-${CI_PACKAGE_BRANCH}
+    image: processmaker/pm4app:${IMAGE_TAG}
     command: sh cicd-run-app.sh
     ports:
       - ${PM_APP_PORT}:80
