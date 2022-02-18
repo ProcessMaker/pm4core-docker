@@ -1,1 +1,1 @@
-docker ps -aqlf "name=^pm4core-docker_cicd_run"
+docker ps -aqlf "name=cicd_run"
