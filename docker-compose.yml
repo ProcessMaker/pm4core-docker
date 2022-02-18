@@ -42,18 +42,32 @@ services:
       - mysql
     depends_on:
       - mysql
+  
+  phpunit:
+    image: processmaker/pm4app:${CI_PROJECT}-${CI_PACKAGE_BRANCH}
+    working_dir: /code/pm4
+    command: vendor/bin/paratest -p 6
+    links:
+      - mysql
+      - redis
+    depends_on:
+      - mysql
+      - redis
 
   web:
     image: processmaker/pm4app:${CI_PROJECT}-${CI_PACKAGE_BRANCH}
-    command: bash
+    command: sh cicd-run-app.sh
     ports:
       - ${PM_APP_PORT}:80
       - ${PM_BROADCASTER_PORT}:6001
+      - 9001:9001
     environment:
       - PM_APP_URL
       - PM_APP_PORT
       - PM_BROADCASTER_PORT
       - DB_DATABASE=processmaker
+      - PM_CI=false
+      - CACHE_DRIVER=redis
     volumes:
       - ${PM_DOCKER_SOCK}:/var/run/docker.sock
       - storage:/code/pm4/storage

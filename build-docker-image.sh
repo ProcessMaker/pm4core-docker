@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ -n "${CIRCLE_TAG}" ]; then
+if [ -z "${IMAGE_TAG}" ]; then
   TAG="latest"
 else
-  TAG=$(echo "${CIRCLE_BRANCH}" | sed 's;/;-;g')
+  TAG=$(echo "${IMAGE_TAG}" | sed 's;/;-;g')
 fi
 
-docker build -t processmaker/"${CIRCLE_PROJECT_REPONAME}":"$TAG" .
+docker commit $(./container.sh) processmaker/pm4app:"$TAG"
 echo "$DOCKERHUB_TOKEN" | docker login -u processmaker --password-stdin
-docker push processmaker/"${CIRCLE_PROJECT_REPONAME}":"$TAG"
+docker push processmaker/pm4app:"$TAG"
