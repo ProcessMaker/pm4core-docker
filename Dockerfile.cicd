@@ -10,3 +10,4 @@ RUN composer install --no-interaction
 WORKDIR /code
 COPY build-files/cicd-build-run.sh .
 COPY build-files/cicd-run-app.sh .
+COPY build-files/cicd-run-phpunit.sh .

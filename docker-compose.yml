@@ -45,8 +45,9 @@ services:
   
   phpunit:
     image: processmaker/pm4app:${IMAGE_TAG}
-    working_dir: /code/pm4
-    command: vendor/bin/paratest -p 6
+    command: sh cicd-run-phpunit.sh
+    env_file:
+      - .env-cicd
     links:
       - mysql
       - redis
