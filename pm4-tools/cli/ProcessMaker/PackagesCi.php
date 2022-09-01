@@ -50,10 +50,9 @@ class PackagesCi {
         $this->artisanCommand('optimize:clear');
         $this->artisanCommand('horizon:terminate');
 
-        // Skip until package unit test fixes are merged
-        // info("Modifying phpunit.xml to add package tests");
-        // PhpUnit::addTests(PhpUnit::configFile());
-        // $this->exportDatabase();
+        info("Modifying phpunit.xml to add package tests");
+        PhpUnit::addTests(PhpUnit::configFile());
+        $this->exportDatabase();
         
         $this->cleanUp();
 

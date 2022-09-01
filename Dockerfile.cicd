@@ -11,3 +11,4 @@ WORKDIR /code
 COPY build-files/cicd-build-run.sh .
 COPY build-files/cicd-run-app.sh .
 COPY build-files/cicd-run-phpunit.sh .
+COPY packages-to-install.php .

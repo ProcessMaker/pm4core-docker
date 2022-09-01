@@ -500,12 +500,16 @@ class Packages
         });
     }
     
-    public function getEnterprisePackages()
+    public function getEnterprisePackages($tests = false)
     {
-        $composer = FileSystem::get(ConfigFacade::codebasePath() . '/composer.json');
-        $composer = json_decode($composer, true);
-        $list = Arr::get($composer, 'extra.processmaker.enterprise', []);
-        return collect(array_keys($list));
+        // $composer = FileSystem::get(ConfigFacade::codebasePath() . '/composer.json');
+        // $composer = json_decode($composer, true);
+        // $list = Arr::get($composer, 'extra.processmaker.enterprise', []);
+        $list = collect(require(__DIR__ . '/../../../packages-to-install.php'));
+        if ($tests) {
+            $list = $list->filter(fn($p) => $p['tests'] === true);
+        }
+        return $list->keys();
     }
     
     public function getJavascriptPackages($path)

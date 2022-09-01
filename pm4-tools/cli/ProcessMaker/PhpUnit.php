@@ -13,7 +13,7 @@ class PhpUnit
 {
     public function addTests($path)
     {
-        $list = Packages::getEnterprisePackages();
+        $list = Packages::getEnterprisePackages(true);
 
         $dom = new DOMDocument();
         $dom->preserveWhiteSpace = false;
