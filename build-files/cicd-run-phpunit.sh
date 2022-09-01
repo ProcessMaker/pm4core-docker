@@ -11,4 +11,4 @@ mysql -u $DB_USERNAME -p"$DB_PASSWORD" -h $DB_HOSTNAME -P $DB_PORT -e "CREATE DA
 
 cd /code/pm4
 # vendor/bin/paratest -p $PARALLEL_TEST_PROCESSES
-vendor/bin/phpunit
+vendor/bin/phpunit --testdox
