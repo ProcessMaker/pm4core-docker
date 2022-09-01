@@ -505,11 +505,27 @@ class Packages
         // $composer = FileSystem::get(ConfigFacade::codebasePath() . '/composer.json');
         // $composer = json_decode($composer, true);
         // $list = Arr::get($composer, 'extra.processmaker.enterprise', []);
+
         $list = collect(require(__DIR__ . '/../../../packages-to-install.php'));
         if ($tests) {
             $list = $list->filter(fn($p) => $p['tests'] === true);
         }
-        return $list->keys();
+
+        $list = $list->keys();
+
+        // Always install the current package
+        if (PackagesCi::repoName() !== 'processmaker') {
+            $list->push(PackagesCi::repoName());
+        }
+
+        // Always install packages listed in the pr body
+        foreach(PackagesCi::getBranches() as $key => $branch) {
+            if ($key !== 'processmaker') {
+                $list->push($key);
+            }
+        }
+
+        return $list;
     }
     
     public function getJavascriptPackages($path)

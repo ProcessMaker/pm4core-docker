@@ -43,7 +43,7 @@ class PackagesCi {
         $list = Packages::getEnterprisePackages();
 
         // Our packages-to-install.php is ordered
-        // $list = $this->orderList($list);
+        $list = $this->orderList($list);
 
         foreach ($list as $package) {
             info("Artisan installing $package");
@@ -198,6 +198,11 @@ class PackagesCi {
         $this->branches[$this->repoName()] = $this->pullRequestBranch();
     }
 
+    public function getBranches()
+    {
+        return $this->branches;
+    }
+
     private function pullRequestBody()
     {
         return Config::env('CI_PR_BODY');
@@ -208,7 +213,7 @@ class PackagesCi {
         return Config::env('CI_PACKAGE_BRANCH');
     }
 
-    private function repoName()
+    public function repoName()
     {
         return Config::env('CI_PROJECT');
     }
