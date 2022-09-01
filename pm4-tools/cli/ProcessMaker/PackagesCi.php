@@ -55,7 +55,7 @@ class PackagesCi {
 
         info("Modifying phpunit.xml to add package tests");
         PhpUnit::addTests(PhpUnit::configFile());
-        $this->exportDatabase();
+        // $this->exportDatabase();
         
         $this->cleanUp();
 
