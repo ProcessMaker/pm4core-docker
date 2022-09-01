@@ -41,7 +41,10 @@ class PackagesCi {
     {
         $this->installCore();
         $list = Packages::getEnterprisePackages();
-        $list = $this->orderList($list);
+
+        // Our packages-to-install.php is ordered
+        // $list = $this->orderList($list);
+
         foreach ($list as $package) {
             info("Artisan installing $package");
             $this->artisanInstall($package);
@@ -159,14 +162,6 @@ class PackagesCi {
             return "processmaker/$package";
         })->join(" ");
     }
-
-    // private function installPackagesPackage()
-    // {
-    //     Git::clone('packages', Config::packagesPath());
-    //     Composer::addRepositoryPath('packages');
-    //     Composer::require('processmaker/packages');
-    //     $this->artisanInstall('packages');
-    // }
 
     private function artisanInstall($package)
     {
@@ -390,21 +385,28 @@ class PackagesCi {
     {
         // unsafe-perm is needed to run postinstall scripts as root
         info("Starting at " . date('c'));
-        CommandLine::mustRun('npm ci --unsafe-perm', Config::codebasePath());
+        CommandLine::mustRun('npm ci --unsafe-perm --omit=dev', Config::codebasePath());
         $this->linkDependentPackages(Config::codebasePath());
+        CommandLine::mustRun('npm install cross-env', Config::codebasePath());
         CommandLine::mustRun('npm run dev', Config::codebasePath());
         info("Finished at " . date('c'));
     }
 
     private function orderList($list)
     {
-        $list = $list->filter(function($item) {
-            return !in_array($item, ['connector-docusign', 'connector-pdf-print', 'package-vocabularies', 'package-data-sources']);
+        return $list->sortBy(function($package) {
+            switch($package) {
+                // Must be installed first
+                case 'package-data-vocabularies':
+                    return 0;
+
+                // Must be installed last
+                case 'connector-docusign':
+                    return 2;
+
+                default:
+                    return 1;
+            }
         });
-        $list->prepend('package-data-sources');
-        $list->prepend('package-vocabularies');
-        $list->push('connector-pdf-print');
-        $list->push('connector-docusign');
-        return $list;
     }
 }
