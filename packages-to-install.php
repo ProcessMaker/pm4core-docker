@@ -8,4 +8,7 @@ return [
     'package-sentry' => [ 'tests' => false ],
     'package-signature' => [ 'tests' => false ],
     'packages' => [ 'tests' => false ],
+    
+    'package-versions' => [ 'tests' => true ],
+    'package-translations' => [ 'tests' => true ],
 ];
