@@ -202,6 +202,9 @@ class PackagesCi
 
     public function getBranches()
     {
+        if (!$this->branches) {
+            $this->setBranches();
+        }
         return $this->branches;
     }
 

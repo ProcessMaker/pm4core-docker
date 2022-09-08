@@ -28,8 +28,8 @@ class PhpUnit
         {
             $testsDirectory = Config::packagesPath($package) . "/tests";
             if (FileSystem::exists($testsDirectory)) {
+                info("Phpunit - Adding $testsDirectory");
                 $directory = $dom->createElement('directory', $testsDirectory);
-                info("Phpunit - Adding $directory");
                 $directories->appendChild($directory);
             }
         }

@@ -11,4 +11,8 @@ return [
     
     'package-versions' => [ 'tests' => true ],
     'package-translations' => [ 'tests' => true ],
+    
+    // Add new packages here or enable tests only after unit test fixes are merged into develop
+    'connector-send-email' => [ 'tests' => false ],
+    'package-collections' => [ 'tests' => false ],
 ];

@@ -502,6 +502,7 @@ class Packages
     
     public function getEnterprisePackages($tests = false)
     {
+        // TODO: Bring this part back when all unit test fixes are merged
         // $composer = FileSystem::get(ConfigFacade::codebasePath() . '/composer.json');
         // $composer = json_decode($composer, true);
         // $list = Arr::get($composer, 'extra.processmaker.enterprise', []);
@@ -519,7 +520,6 @@ class Packages
         }
 
         // Always install packages listed in the pr body
-        info("Branches found in PR: " . print_r(PackagesCi::getBranches(), true));
         foreach(PackagesCi::getBranches() as $key => $branch) {
             if ($key !== 'processmaker') {
                 $list->push($key);
