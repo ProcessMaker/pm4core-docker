@@ -1,18 +1,20 @@
 <?php
+
 namespace ProcessMaker\Cli;
 
-use function ProcessMaker\Cli\info;
-use \Git;
-use \Config;
-use \Composer;
-use \CommandLine;
-use \FileSystem;
+use Git;
+use Config;
+use Composer;
+use CommandLine;
+use FileSystem;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemFilesystem;
 use Illuminate\Filesystem\Filesystem as IlluminateFilesystemFilesystem;
 use Illuminate\Support\Arr;
 
-class PackagesCi {
+use function ProcessMaker\Cli\info;
 
+class PackagesCi
+{
     private $branches;
 
     private $javascriptPackageBuildCommands = [
@@ -56,7 +58,7 @@ class PackagesCi {
         info("Modifying phpunit.xml to add package tests");
         PhpUnit::addTests(PhpUnit::configFile());
         // $this->exportDatabase();
-        
+
         $this->cleanUp();
 
         info("Done");
@@ -158,7 +160,7 @@ class PackagesCi {
 
     private function composerRequireList($list)
     {
-        return $list->map(function($package) {
+        return $list->map(function ($package) {
             return "processmaker/$package";
         })->join(" ");
     }
@@ -170,7 +172,7 @@ class PackagesCi {
 
     private function artisanCommand($cmd)
     {
-        return CommandLine::runCommand("php artisan ${cmd}", function($code, $output) {
+        return CommandLine::runCommand("php artisan ${cmd}", function ($code, $output) {
             throw new \Exception($output);
         }, Config::codebasePath());
     }
@@ -189,6 +191,7 @@ class PackagesCi {
 
     private function setBranches()
     {
+        info("Setting branches from pull request body: " . $this->pullRequestBody());
         $result = preg_match_all('/ci:(.+?):(.+?)(\s|$)/', $this->pullRequestBody(), $matches);
         if ($result && $result > 0) {
             $this->branches = array_combine($matches[1], $matches[2]);
@@ -196,6 +199,7 @@ class PackagesCi {
             $this->branches = [];
         }
         $this->branches[$this->repoName()] = $this->pullRequestBranch();
+        info("Branches are now: " . print_r($this->branches, true));
     }
 
     public function getBranches()
@@ -342,7 +346,6 @@ class PackagesCi {
     {
         $packagesToBuild = [];
         foreach ($packages as $package) {
-
             // Only clone/build/link if specified in the PR
             // Otherwise, just use core's package.json
             if (!$this->getBranch($package)) {
@@ -399,13 +402,13 @@ class PackagesCi {
 
     private function orderList($list)
     {
-        return $list->sortBy(function($package) {
+        return $list->sortBy(function ($package) {
             switch($package) {
                 // Must be installed first
                 case 'package-data-vocabularies':
                     return 0;
 
-                // Must be installed last
+                    // Must be installed last
                 case 'connector-docusign':
                     return 2;
 
