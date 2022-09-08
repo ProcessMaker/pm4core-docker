@@ -14,6 +14,7 @@ class PhpUnit
     public function addTests($path)
     {
         $list = Packages::getEnterprisePackages(true);
+        info("Phpunit - packages to search for tests in: ", print_r($list, true));
 
         $dom = new DOMDocument();
         $dom->preserveWhiteSpace = false;
@@ -28,6 +29,7 @@ class PhpUnit
             $testsDirectory = Config::packagesPath($package) . "/tests";
             if (FileSystem::exists($testsDirectory)) {
                 $directory = $dom->createElement('directory', $testsDirectory);
+                info("Phpunit - Adding $directory");
                 $directories->appendChild($directory);
             }
         }

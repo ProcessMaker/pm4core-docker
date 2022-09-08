@@ -191,7 +191,6 @@ class PackagesCi
 
     private function setBranches()
     {
-        info("Setting branches from pull request body: " . $this->pullRequestBody());
         $result = preg_match_all('/ci:(.+?):(.+?)(\s|$)/', $this->pullRequestBody(), $matches);
         if ($result && $result > 0) {
             $this->branches = array_combine($matches[1], $matches[2]);
@@ -199,7 +198,6 @@ class PackagesCi
             $this->branches = [];
         }
         $this->branches[$this->repoName()] = $this->pullRequestBranch();
-        info("Branches are now: " . print_r($this->branches, true));
     }
 
     public function getBranches()

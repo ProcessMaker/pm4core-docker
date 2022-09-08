@@ -519,6 +519,7 @@ class Packages
         }
 
         // Always install packages listed in the pr body
+        info("Branches found in PR: " . print_r(PackagesCi::getBranches(), true));
         foreach(PackagesCi::getBranches() as $key => $branch) {
             if ($key !== 'processmaker') {
                 $list->push($key);
