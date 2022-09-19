@@ -503,30 +503,32 @@ class Packages
     public function getEnterprisePackages($tests = false)
     {
         // TODO: Bring this part back when all unit test fixes are merged
-        // $composer = FileSystem::get(ConfigFacade::codebasePath() . '/composer.json');
-        // $composer = json_decode($composer, true);
-        // $list = Arr::get($composer, 'extra.processmaker.enterprise', []);
+        $composer = FileSystem::get(ConfigFacade::codebasePath() . '/composer.json');
+        $composer = json_decode($composer, true);
+        $list = Arr::get($composer, 'extra.processmaker.enterprise', []);
 
-        $list = collect(require(__DIR__ . '/../../../packages-to-install.php'));
-        if ($tests) {
-            $list = $list->filter(fn($p) => $p['tests'] === true);
-        }
+        return collect(array_keys($list));
 
-        $list = $list->keys();
+        // $list = collect(require(__DIR__ . '/../../../packages-to-install.php'));
+        // if ($tests) {
+        //     $list = $list->filter(fn($p) => $p['tests'] === true);
+        // }
 
-        // Always install the current package
-        if (PackagesCi::repoName() !== 'processmaker') {
-            $list->push(PackagesCi::repoName());
-        }
+        // $list = $list->keys();
 
-        // Always install packages listed in the pr body
-        foreach(PackagesCi::getBranches() as $key => $branch) {
-            if ($key !== 'processmaker') {
-                $list->push($key);
-            }
-        }
+        // // Always install the current package
+        // if (PackagesCi::repoName() !== 'processmaker') {
+        //     $list->push(PackagesCi::repoName());
+        // }
 
-        return $list;
+        // // Always install packages listed in the pr body
+        // foreach(PackagesCi::getBranches() as $key => $branch) {
+        //     if ($key !== 'processmaker') {
+        //         $list->push($key);
+        //     }
+        // }
+
+        // return $list;
     }
     
     public function getJavascriptPackages($path)
