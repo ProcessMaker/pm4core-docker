@@ -5,12 +5,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.cicd
+      args:
+        - BASE_VERSION=${BASE_VERSION:-2.0.0}
     command: sh cicd-build-run.sh
     environment:
       - GITHUB_TOKEN
       - CI_PR_BODY
       - CI_PROJECT
       - CI_PACKAGE_BRANCH
+      - BASE_VERSION
     env_file:
       - .env-cicd
     links:
@@ -27,6 +30,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.base
+  
+  base-php81:
+    image: processmaker/pm4-base:2.1.0
+    build:
+      context: .
+      dockerfile: Dockerfile-php81.base
 
   redis:
     image: redis

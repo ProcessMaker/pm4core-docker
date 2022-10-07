@@ -1,4 +1,5 @@
-FROM processmaker/pm4-base:2.0.0
+ARG BASE_VERSION
+FROM processmaker/pm4-base:${BASE_VERSION}
 
 RUN npm config set cache /cache/npm --global
 ENV COMPOSER_HOME=/cache/composer

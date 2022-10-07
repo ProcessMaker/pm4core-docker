@@ -1,0 +1,68 @@
+FROM ubuntu:20.04
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ="America/Los_Angeles"
+
+RUN apt update
+RUN apt install -y software-properties-common
+RUN add-apt-repository ppa:ondrej/php
+
+RUN apt install -y php8.1 php8.1-cli php8.1-fpm php8.1-common
+RUN apt install -y php8.1-mysql php8.1-zip php8.1-gd php8.1-mbstring php8.1-curl php8.1-xml php8.1-bcmath php8.1-imagick php8.1-dom php8.1-sqlite3 php8.1-imap
+RUN apt install -y nginx vim curl git unzip wget supervisor cron mysql-client build-essential
+
+#
+# node
+#
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt -y install nodejs
+
+#
+# install composer
+# 
+RUN wget -O composer-setup.php https://getcomposer.org/installer
+RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN composer self-update
+
+#
+# cron
+#
+COPY build-files/laravel-cron /etc/cron.d/laravel-cron
+RUN chmod 0644 /etc/cron.d/laravel-cron && crontab /etc/cron.d/laravel-cron
+
+#
+# docker client
+#
+ENV DOCKERVERSION=20.10.5
+RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKERVERSION}.tgz \
+  && tar xzvf docker-${DOCKERVERSION}.tgz --strip 1 \
+                 -C /usr/local/bin docker/docker \
+  && rm docker-${DOCKERVERSION}.tgz
+
+#
+# configure php-fpm to run as root
+#
+RUN sed -i 's/www-data/root/g' /etc/php/8.1/fpm/pool.d/www.conf
+
+#
+# nginx 
+# 
+COPY build-files/nginx.conf /etc/nginx/nginx.conf
+
+#
+# supervisord
+#
+COPY build-files/services.conf /etc/supervisor/conf.d/services.conf
+
+#
+# laravel echo server
+#
+RUN mkdir -p /code
+COPY build-files/laravel-echo-server.json /code
+
+# populate $_ENV with environment variables
+RUN echo "variables_order = \"EGPCS\"" > /etc/php/8.1/cli/conf.d/30-env.ini
+
+# Use the correct version of mysqldump
+# COPY --from=mysql:5.7 /usr/bin/mysqldump /usr/bin/mysqldump
+
+EXPOSE 80 443 6001
