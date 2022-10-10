@@ -35,7 +35,7 @@ services:
     image: processmaker/pm4-base:2.1.0
     build:
       context: .
-      dockerfile: Dockerfile-php81.base
+      dockerfile: Dockerfile.php81.base
 
   redis:
     image: redis

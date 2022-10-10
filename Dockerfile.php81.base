@@ -13,8 +13,18 @@ RUN apt install -y nginx vim curl git unzip wget supervisor cron mysql-client bu
 #
 # node
 #
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt -y install nodejs
+# RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+# RUN apt -y install nodejs
+
+ENV NVM_DIR /root/.nvm
+ENV NODE_VERSION 16.15.0
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && \
+    . "$NVM_DIR/nvm.sh" && \
+    nvm install $NODE_VERSION && \
+    nvm alias default $NODE_VERSION && \
+    nvm use default
+ENV NODE_PATH $NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
+ENV PATH      $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 #
 # install composer
@@ -61,8 +71,5 @@ COPY build-files/laravel-echo-server.json /code
 
 # populate $_ENV with environment variables
 RUN echo "variables_order = \"EGPCS\"" > /etc/php/8.1/cli/conf.d/30-env.ini
-
-# Use the correct version of mysqldump
-# COPY --from=mysql:5.7 /usr/bin/mysqldump /usr/bin/mysqldump
 
 EXPOSE 80 443 6001

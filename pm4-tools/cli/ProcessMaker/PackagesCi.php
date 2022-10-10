@@ -7,6 +7,8 @@ use Config;
 use Composer;
 use CommandLine;
 use FileSystem;
+use Packages;
+use PhpUnit;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemFilesystem;
 use Illuminate\Filesystem\Filesystem as IlluminateFilesystemFilesystem;
 use Illuminate\Support\Arr;

@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Container\Container;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use \Config;
 
 // if (!defined('BREW_PREFIX')) {
 //     define('BREW_PREFIX', (new CommandLine())->runAsUser('printf $(brew --prefix)'));

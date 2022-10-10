@@ -503,7 +503,7 @@ class Packages
     public function getEnterprisePackages($tests = false)
     {
         // TODO: Bring this part back when all unit test fixes are merged
-        $composer = FileSystem::get(ConfigFacade::codebasePath() . '/composer.json');
+        $composer = FileSystemFacade::get(ConfigFacade::codebasePath() . '/composer.json');
         $composer = json_decode($composer, true);
         $list = Arr::get($composer, 'extra.processmaker.enterprise', []);
 
@@ -533,7 +533,7 @@ class Packages
     
     public function getJavascriptPackages($path)
     {
-        $composer = FileSystem::get($path . '/package.json');
+        $composer = FileSystemFacade::get($path . '/package.json');
         $composer = json_decode($composer, true);
         $list = Arr::get($composer, 'dependencies', []);
         return collect(array_keys($list))->filter(function($package) {
