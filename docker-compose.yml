@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile.cicd
       args:
-        - BASE_VERSION=${BASE_VERSION:-2.1.6}
+        - BASE_VERSION=${BASE_VERSION:-2.1.7}
     command: sh cicd-build-run.sh
     environment:
       - GITHUB_TOKEN
@@ -32,7 +32,7 @@ services:
       dockerfile: Dockerfile.base
   
   base-php81:
-    image: processmaker/pm4-base:${BASE_VERSION:-2.1.6}
+    image: processmaker/pm4-base:${BASE_VERSION:-2.1.7}
     build:
       context: .
       dockerfile: Dockerfile.php81.base
