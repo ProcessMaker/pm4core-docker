@@ -46,10 +46,11 @@ if [ ! -f ".env" ]; then
     --data-username=pm \
     --data-password=pass \
     --redis-host=redis
-    
+
 
     echo "PROCESSMAKER_SCRIPTS_DOCKER=/usr/local/bin/docker" >> .env
     echo "PROCESSMAKER_SCRIPTS_DOCKER_MODE=copying" >> .env
     echo "LARAVEL_ECHO_SERVER_AUTH_HOST=http://localhost" >> .env
     echo "SESSION_SECURE_COOKIE=false" >> .env
+    sed -i "/SESSION_DOMAIN/d" .env
 fi

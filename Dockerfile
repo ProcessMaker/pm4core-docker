@@ -1,4 +1,4 @@
-FROM processmaker/pm4-base:1.0.0
+FROM pm4-base:local
 
 ARG PM_VERSION
 

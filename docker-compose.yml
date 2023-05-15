@@ -4,27 +4,33 @@ services:
     image: processmaker/pm4-core:${PM_VERSION}
     ports:
       - ${PM_APP_PORT}:80
+      #- ${PM_APP_PORT}:443
       - ${PM_BROADCASTER_PORT}:6001
     environment:
       - PM_APP_URL
       - PM_APP_PORT
       - PM_BROADCASTER_PORT
+      - PM_VERSION
     volumes:
       - ${PM_DOCKER_SOCK}:/var/run/docker.sock
       - storage:/code/pm4/storage
+      - ./build-files/nginx.conf:/etc/nginx/nginx.conf
+      - ./build-files/nginx-sites.conf:/etc/nginx/sites-enabled/default
+      - ${PM_CERT_PATH}:/etc/nginx/ssl
+      # - ./.env.app:/code/pm4/.env
     links:
       - redis
-      - mysql 
+      - mysql
     depends_on:
       - mysql
-      - redis 
+      - redis
   redis:
     image: redis
   mysql:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password 
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: processmaker
       MYSQL_USER: pm
       MYSQL_PASSWORD: pass
