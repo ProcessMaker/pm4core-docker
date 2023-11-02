@@ -4,7 +4,7 @@ set -ex
 
 if [ ! -f ".env" ]; then
 
-    while ! mysqladmin ping -u pm -ppass -h ${PM_DB_HOST} --silent; do
+    while ! mysqladmin ping -u pm -ppass -h ${PM_DB_HOST} -P ${PM_DB_PORT} --silent; do
         echo "Waiting for mysql"
         sleep 1
     done
