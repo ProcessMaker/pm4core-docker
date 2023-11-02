@@ -43,11 +43,11 @@ This build has no enterprise packages.
 
   If you want to use a different mysql database other than the one in the compose file then you will need to change the custom env settings, remove mysql from the docker-compose file and setup the database and user in mysql. You can use the following commands to setup the datbase (Change the username and password to match what you put in the custom env file.)
 
-'''
-create database processmaker CHARACTER SET utf8 COLLATE utf8_general_ci;
-grant ALL on processmaker.* TO pm@'%' IDENTIFIED BY 'pass';
-FLUSH PRIVILEGES;
-'''
+  ```
+  create database processmaker CHARACTER SET utf8 COLLATE utf8_general_ci;
+  grant ALL on processmaker.* TO pm@'%' IDENTIFIED BY 'pass';
+  FLUSH PRIVILEGES;
+  ```
 
 1. Run `docker-compose up`
 
