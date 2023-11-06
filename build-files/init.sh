@@ -1,21 +1,10 @@
 set -ex
 
-# # Wait for mysql to bec available
-# while ! mysqladmin ping -u pm -ppass -h mysql --silent; do
-#     echo "Waiting for mysql"
-#     sleep 1
-# done
-
-# # Check if database has been initialized
-# NUM_TABLES=$(mysql -u pm -p'pass' -h mysql -N -B -e 'show tables;' processmaker | wc -l)
-
-# if [ $NUM_TABLES -eq 0 ]; then
-#     mysql -u pm -p'pass' -h mysql processmaker < mysqldump.sql
-# fi
+# This init file is run everytime the container instance starts
 
 if [ ! -f ".env" ]; then
 
-    while ! mysqladmin ping -u pm -ppass -h mysql --silent; do
+    while ! mysqladmin ping -u pm -ppass -h ${PM_DB_HOST} -P ${PM_DB_PORT} --silent; do
         echo "Waiting for mysql"
         sleep 1
     done
@@ -34,19 +23,19 @@ if [ ! -f ".env" ]; then
     --email=admin@processmaker.com \
     --first-name=Admin \
     --last-name=User \
-    --db-host=mysql \
-    --db-port=3306 \
-    --db-name=processmaker \
-    --db-username=pm \
-    --db-password=pass \
+    --db-host=${PM_DB_HOST} \
+    --db-port=${PM_DB_PORT} \
+    --db-name=${PM_DB_NAME} \
+    --db-username=${PM_DB_USERNAME} \
+    --db-password=${PM_DB_PASSWORD} \
     --data-driver=mysql \
-    --data-host=mysql \
-    --data-port=3306 \
-    --data-name=processmaker \
-    --data-username=pm \
-    --data-password=pass \
-    --redis-host=redis
-    
+    --data-host=${PM_DB_HOST} \
+    --data-port=${PM_DB_PORT} \
+    --data-name=${PM_DB_NAME} \
+    --data-username=${PM_DB_USERNAME} \
+    --data-password=${PM_DB_PASSWORD} \
+    --redis-host=${PM_REDIS_HOST}
+
 
     echo "PROCESSMAKER_SCRIPTS_DOCKER=/usr/local/bin/docker" >> .env
     echo "PROCESSMAKER_SCRIPTS_DOCKER_MODE=copying" >> .env

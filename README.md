@@ -8,7 +8,7 @@ This build has no enterprise packages.
 - Docker Engine >= 3.2
   - For Mac and Windows Users, we recommend [Docker Desktop](https://www.docker.com/products/docker-desktop)
   - For other installation options: [Install Instructions](https://docs.docker.com/engine/install/)
-  
+
 - Docker Compose >= 1.2
   - If using Docker Desktop, Compose is already included
   - For all others: [Install Instructions](https://docs.docker.com/compose/install/)
@@ -26,6 +26,28 @@ This build has no enterprise packages.
    | PM_APP_PORT | Choose a different port if 8080 is in use on your host |
    | PM_BROADCASTER_PORT | Choose a different port for the Socket.io server if 6001 is in use on your host |
    | PM_DOCKER_SOCK | Location of your docker socket file. See [note](#bind-mounting-the-docker-socket) |
+
+   If you are configuring the image to connect to a different mysql or redis database you can remove them from the docker compose file and then alter the following variables from their default values:
+
+   | Variable | Description |
+   | --- | --- |
+   | PM_DB_HOST | host for the mysql server |
+   | PM_DB_PORT | port for the mysql server |
+   | PM_DB_NAME | database name |
+   | PM_DB_USERNAME | mysql database username |
+   | PM_DB_PASSWORD | mysql database password |
+   | PM_REDIS_HOST | redis host |
+
+
+1. Setup External DB *(optional)*
+
+  If you want to use a different mysql database other than the one in the compose file then you will need to change the custom env settings, remove mysql from the docker-compose file and setup the database and user in mysql. You can use the following commands to setup the datbase (Change the username and password to match what you put in the custom env file.)
+
+  ```
+  create database processmaker CHARACTER SET utf8 COLLATE utf8_general_ci;
+  grant ALL on processmaker.* TO pm@'%' IDENTIFIED BY 'pass';
+  FLUSH PRIVILEGES;
+  ```
 
 1. Run `docker-compose up`
 
@@ -49,7 +71,7 @@ This build has no enterprise packages.
 ## Building the application image locally
 If you want to build your own version locally, run docker build with PM_VERSION set to a tag at https://github.com/ProcessMaker/processmaker/tags (without the leading 'v')
 ```
-docker build --build-arg PM_VERSION=4.1.21-RC7 -t processmaker/pm4-core:local .
+docker build --build-arg PM_VERSION=4.1.21 -t processmaker/pm4-core:local .
 ```
 Then change PM_VERSION in .env to `local`
 

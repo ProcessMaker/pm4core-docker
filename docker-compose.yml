@@ -9,22 +9,28 @@ services:
       - PM_APP_URL
       - PM_APP_PORT
       - PM_BROADCASTER_PORT
+      - PM_DB_HOST
+      - PM_DB_PORT
+      - PM_DB_NAME
+      - PM_DB_USERNAME
+      - PM_DB_PASSWORD
+      - PM_REDIS_HOST
     volumes:
       - ${PM_DOCKER_SOCK}:/var/run/docker.sock
       - storage:/code/pm4/storage
     links:
       - redis
-      - mysql 
+      - mysql
     depends_on:
       - mysql
-      - redis 
+      - redis
   redis:
     image: redis
   mysql:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password 
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: processmaker
       MYSQL_USER: pm
       MYSQL_PASSWORD: pass
